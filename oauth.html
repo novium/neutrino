@@ -1,0 +1,101 @@
+<template name="layout">
+  {{> yield}}
+</template>
+
+<!-- LOGIN -->
+<template name="login">
+  <br>
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-6 col-xs-offset-3">
+        <div class="well">
+  {{> atForm }}
+</div>
+</div>
+</div>
+</div>
+</template>
+
+<!-- REGISTER -->
+<template name="register">
+  {{#unless currentUser}}
+  <br>
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-6 col-xs-offset-3">
+        <div class="well">
+          <form>
+            <div class="form-group">
+              <input type="email" class="form-control" id="email" placeholder="email">
+            </div>
+
+            <div class="form-group">
+              <input type="password" class="form-control" id="password" placeholder="password">
+            </div>
+
+            <input type="submit" class="btn btn-block btn-primary" value="register">
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  {{/unless}}
+</template>
+
+<!-- MAIN -->
+<template name="auth">
+  <br>
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-6 col-xs-offset-3">
+        <div class="well">
+          {{#if currentUser}}
+            <h1>Auth</h1>
+            <p>The application <b>{{name}}</b> requests access to the following information</p>
+            <ul>
+              {{#each scope}}<li>{{this}}</li>{{/each}}
+            </ul>
+            <div class="form-inline">
+              <div class="btn-group btn-group-justified" role="group" aria-label="...">
+                <div class="btn-group" role="group">
+                  <input id="deny" type="submit" class="btn btn-danger" value="deny">
+                </div>
+                <div class="btn-group" role="group">
+                  <input id="accept" type="submit" class="btn btn-success" value="accept">
+                </div>
+              </div>
+            </div>
+          {{/if}}
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<template name="admin">
+  <br>
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-8 col-xs-offset-2">
+        <h2>oauth admin</h2>
+        <div class="well">
+          <p>Add your clients etc. right 'ere</p>
+          {{#autoForm collection="Clients" id="add_client_form" type="insert"}}
+            {{> afQuickField name="name"}}
+            {{> afQuickField name="scopes"}}
+            {{> afQuickField name="redirect_uri"}}
+            <button type="submit" class="btn btn-primary">Insert</button>
+          {{/autoForm}}
+        </div>
+        <hr>
+        <div class="well">
+          <p>List of all the current clients</p>
+          <p>name | id | client_secret</p>
+          {{#each clients}}
+            {{name}} | {{_id}} | {{client_secret}}<br>
+          {{/each}}
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
