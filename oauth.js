@@ -83,16 +83,18 @@ Router.route('auth', {
   template: 'auth',
   layoutTemplate: 'layout',
   onBeforeAction: function() {
-    response_type = this.params.query.response_type;
-    client_id     = this.params.query.client_id;
-    redirect_uri  = this.params.query.redirect_uri;
-    scope         = this.params.query.scope;
-    Session.set('auth', {
-      response_type: response_type,
-      client_id: client_id,
-      redirect_uri: redirect_uri,
-      scope: scope
-    });
+    if(this.params.query.client_id) {
+      response_type = this.params.query.response_type;
+      client_id     = this.params.query.client_id;
+      redirect_uri  = this.params.query.redirect_uri;
+      scope         = this.params.query.scope;
+      Session.set('auth', {
+        response_type: response_type,
+        client_id: client_id,
+        redirect_uri: redirect_uri,
+        scope: scope
+      });
+    }
 
     if(!Meteor.userId()) {
       Router.go('signin');
@@ -183,30 +185,6 @@ Router.route('admin', {
  **************/
 
 if(Meteor.isClient) {
-
-  /*
-  Template.login.events({
-    'submit form': function(event, template) {
-      event.preventDefault();
-      var email     = template.find('#email').value;
-      var password  = template.find('#password').value;
-      Meteor.loginWithPassword(email, password);
-    }
-  });
-
-  Template.novium_oauthRegister.events({
-    'submit form': function(event, template) {
-      event.preventDefault();
-      var email     = template.find('#email').value;
-      var password  = template.find('#password').value;
-      Accounts.createUser({
-        email: email,
-        password: password
-      });
-      Router.go('auth');
-    }
-  }); */
-
   Template.admin.helpers({
     clients: function() {
       return Clients.find();
