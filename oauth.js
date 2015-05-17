@@ -157,12 +157,13 @@ Router.route('token', { where: 'server', path: '/token' })
     this.response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 
     auth_code = this.request.body.code;
-    if(authCodes.findOne({auth_code: auth_code})) {
-      r = authCodes.findOne({auth_code: auth_code});
-      client_id = r.client_id;
-      user_id = r.user_id;
+    client_secret = this.request.body.client_secret;
+    client_id = this.request.body.client_id;
 
-      accessTokens.insert({client_id: client_id, user_id: user_id}, function(error, result) {
+    if(Clients.findOne({_id: client_id, client_secret: client_secret}) &&  authCodes.findOne({auth_code: auth_code})) {
+      r = authCodes.findOne({auth_code: auth_code});
+
+      accessTokens.insert({client_id: r.client_id, user_id: r.user_id}, function(error, result) {
         access_token = accessTokens.findOne(result).access_token;
         this_token.response.end(JSON.stringify(
           {
@@ -187,12 +188,13 @@ Router.route('token', { where: 'server', path: '/token' })
     this.response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 
     auth_code = this.params.query.code;
-    if(authCodes.findOne({auth_code: auth_code})) {
-      r = authCodes.findOne({auth_code: auth_code});
-      client_id = r.client_id;
-      user_id = r.user_id;
+    client_secret = this.params.query.client_secret;
+    client_id = this.params.query.client_id;
 
-      accessTokens.insert({client_id: client_id, user_id: user_id}, function(error, result) {
+    if(Clients.findOne({_id: client_id, client_secret: client_secret}) &&  authCodes.findOne({auth_code: auth_code})) {
+      r = authCodes.findOne({auth_code: auth_code});
+
+      accessTokens.insert({client_id: r.client_id, user_id: r.user_id}, function(error, result) {
         access_token = accessTokens.findOne(result).access_token;
         this_token.response.end(JSON.stringify(
           {
