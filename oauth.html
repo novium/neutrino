@@ -2,6 +2,10 @@
   {{> yield}}
 </template>
 
+<template name="loading">
+{{> spinner}}
+</template>
+
 <!-- LOGIN -->
 <template name="login">
   <br>
@@ -27,7 +31,7 @@
             <h1>Auth</h1>
             <p>The application <b>{{name}}</b> requests access to the following information</p>
             <ul>
-              {{#each scope}}<li>{{this}}</li>{{/each}}
+              {{#each scopes}}<li>{{this}}</li>{{/each}}
             </ul>
             <div class="form-inline">
               <div class="btn-group btn-group-justified" role="group" aria-label="...">

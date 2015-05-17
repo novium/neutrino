@@ -76,9 +76,22 @@ Clients.attachSchema(Schemas.Clients);
 authCodes.attachSchema(Schemas.authCodes);
 accessTokens.attachSchema(Schemas.accessTokens);
 
+if(Meteor.isServer) {
+  Meteor.publish('Clients', function(client_id) {
+    return Clients.find(client_id, {fields: {client_secret: 0}});
+  });
+  Meteor.publish('authCodes', function() {
+    this.ready();
+  });
+}
+
 /*
  * Router
  ********/
+
+Router.configure({
+  loadingTemplate: 'loading'
+});
 
 // Auth route
 // DOMAIN.TLD/auth?response_type=token&client_id=CLIENT_ID&redirect_uri=REDIRECT_URI&scope=SCOPES
@@ -87,7 +100,10 @@ Router.route('auth', {
   name: 'auth',
   template: 'auth',
   layoutTemplate: 'layout',
-  onBeforeAction: function() {
+  data: function() {
+    return Clients.findOne(Session.get('auth').client_id);
+  },
+  waitOn: function() {
     // Saves the URL parameters so that user can
     // go back to the auth page after doing something
     // else as a session variable.
@@ -108,8 +124,10 @@ Router.route('auth', {
     if(!Meteor.userId()) {
       Router.go('signin');
     } else {
-      oauth = Clients.findOne(Session.get('auth').client_id);
-      this.next();
+      return [
+        Meteor.subscribe('Clients', Session.get('auth').client_id),
+        Meteor.subscribe('authCodes')
+      ];
     }
   }
 });
@@ -202,16 +220,6 @@ if(Meteor.isClient) {
   Template.admin.helpers({
     clients: function() {
       return Clients.find();
-    }
-  });
-
-  // Authorization page helpers
-  Template.auth.helpers({
-    scope: function() {
-      return Clients.findOne(Session.get('auth').client_id).scopes;
-    },
-    name: function() {
-      return Clients.findOne(Session.get('auth').client_id).name;
     }
   });
 
