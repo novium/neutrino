@@ -1,12 +1,15 @@
 /*
  * Database
  **********/
-Clients       = new Mongo.Collection('Clients');
-authCodes     = new Mongo.Collection('authCodes');
-accessTokens  = new Mongo.Collection('accessTokens');
+
+// Databases
+Clients       = new Mongo.Collection('Clients');      // Clients
+authCodes     = new Mongo.Collection('authCodes');    // Authorization codes
+accessTokens  = new Mongo.Collection('accessTokens'); // Access tokens
 
 var Schemas = {};
 
+// Client database schema
 Schemas.Clients = new SimpleSchema({
   name: {
     type: String,
@@ -34,6 +37,7 @@ Schemas.Clients = new SimpleSchema({
   }
 });
 
+// Authorization code database schema
 Schemas.authCodes = new SimpleSchema({
   client_id: {
     type: String,
@@ -50,6 +54,7 @@ Schemas.authCodes = new SimpleSchema({
   }
 });
 
+// API Access token database schema
 Schemas.accessTokens = new SimpleSchema({
   client_id: {
     type: String,
@@ -83,6 +88,9 @@ Router.route('auth', {
   template: 'auth',
   layoutTemplate: 'layout',
   onBeforeAction: function() {
+    // Saves the URL parameters so that user can
+    // go back to the auth page after doing something
+    // else as a session variable.
     if(this.params.query.client_id) {
       response_type = this.params.query.response_type;
       client_id     = this.params.query.client_id;
@@ -96,6 +104,7 @@ Router.route('auth', {
       });
     }
 
+    // Check if user is logged in.
     if(!Meteor.userId()) {
       Router.go('signin');
     } else {
@@ -105,6 +114,9 @@ Router.route('auth', {
   }
 });
 
+// Accepts both POST and GET requests
+// I'm not entirely sure that both are needed but I guess
+// It doesn't hurt to have both available for now.
 Router.route('token', { where: 'server', path: '/token' })
   .post(function() {
     this_token = this;
@@ -168,6 +180,7 @@ AccountsTemplates.configureRoute('signIn', {
     layoutTemplate: 'layout'
 });
 
+// Unused
 Router.route('register', {
   path: '/oauth/register',
   template: 'register',
@@ -185,12 +198,14 @@ Router.route('admin', {
  **************/
 
 if(Meteor.isClient) {
+  // Admin page helpers
   Template.admin.helpers({
     clients: function() {
       return Clients.find();
     }
   });
 
+  // Authorization page helpers
   Template.auth.helpers({
     scope: function() {
       return Clients.findOne(Session.get('auth').client_id).scopes;
@@ -200,6 +215,7 @@ if(Meteor.isClient) {
     }
   });
 
+  // Authorization page event code
   Template.auth.events({
     'click #accept': function() {
       client_id = Session.get('auth').client_id;
@@ -207,6 +223,10 @@ if(Meteor.isClient) {
         auth_code = authCodes.findOne(result).auth_code;
         window.location.replace(Clients.findOne(Session.get('auth').client_id).redirect_uri + '?code=' + auth_code);
       });
+    },
+
+    'click #deny': function() {
+      window.location.replace(Clients.findOne(Session.get('auth').client_id).redirect_uri + '?error=' + "denied");
     }
   });
 }

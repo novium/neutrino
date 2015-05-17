@@ -11,6 +11,7 @@ As it stands this **is *NOT* secure at all** and shouldn't be used in production
 
 ## // todo
 * Security
+* Rework into a package
 * Everything not listed in the feature-list >.>
 
 ## Contributing
