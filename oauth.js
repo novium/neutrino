@@ -43,6 +43,13 @@ Schemas.authCodes = new SimpleSchema({
     type: String,
     label: 'client_id'
   },
+  user_id: {
+    type: String,
+    label: 'user_id',
+    autoValue: function() {
+      return this.userId;
+    }
+  },
   auth_code: {
     type: String,
     label: 'auth_code',
@@ -59,6 +66,10 @@ Schemas.accessTokens = new SimpleSchema({
   client_id: {
     type: String,
     label: 'client_id'
+  },
+  user_id: {
+    type: String,
+    label: 'user_id'
   },
   access_token: {
     type: String,
@@ -77,11 +88,13 @@ authCodes.attachSchema(Schemas.authCodes);
 accessTokens.attachSchema(Schemas.accessTokens);
 
 if(Meteor.isServer) {
-  Meteor.publish('Clients', function(client_id) {
+  Meteor.publish('Client', function(client_id) {
     return Clients.find(client_id, {fields: {client_secret: 0}});
   });
+
   Meteor.publish('authCodes', function() {
-    this.ready();
+    user_id = this.userId;
+    return authCodes.find({user_id: user_id});
   });
 }
 
@@ -125,7 +138,7 @@ Router.route('auth', {
       Router.go('signin');
     } else {
       return [
-        Meteor.subscribe('Clients', Session.get('auth').client_id),
+        Meteor.subscribe('Client', Session.get('auth').client_id),
         Meteor.subscribe('authCodes')
       ];
     }
@@ -145,8 +158,11 @@ Router.route('token', { where: 'server', path: '/token' })
 
     auth_code = this.request.body.code;
     if(authCodes.findOne({auth_code: auth_code})) {
-      client_id = authCodes.findOne({auth_code: auth_code}).client_id;
-      accessTokens.insert({client_id: client_id}, function(error, result) {
+      r = authCodes.findOne({auth_code: auth_code});
+      client_id = r.client_id;
+      user_id = r.user_id;
+
+      accessTokens.insert({client_id: client_id, user_id: user_id}, function(error, result) {
         access_token = accessTokens.findOne(result).access_token;
         this_token.response.end(JSON.stringify(
           {
@@ -172,8 +188,11 @@ Router.route('token', { where: 'server', path: '/token' })
 
     auth_code = this.params.query.code;
     if(authCodes.findOne({auth_code: auth_code})) {
-      client_id = authCodes.findOne({auth_code: auth_code}).client_id;
-      accessTokens.insert({client_id: client_id}, function(error, result) {
+      r = authCodes.findOne({auth_code: auth_code});
+      client_id = r.client_id;
+      user_id = r.user_id;
+
+      accessTokens.insert({client_id: client_id, user_id: user_id}, function(error, result) {
         access_token = accessTokens.findOne(result).access_token;
         this_token.response.end(JSON.stringify(
           {
