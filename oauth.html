@@ -16,7 +16,7 @@
   <br>
   <div class="container">
     <div class="row">
-      <div class="col-xs-6 col-xs-offset-3">
+      <div class="col-md-6 col-md-offset-3">
         <div class="well">
           {{> atForm }}
         </div>
@@ -30,32 +30,42 @@
   <br>
   <div class="container auth">
     <div class="row">
-      <div class="col-xs-6 col-xs-offset-3">
+      <div class="col-md-6 col-md-offset-3">
+        <div class="logo">
+          <img style="display:block-inline" src="http://placehold.it/116x50" class="img-responsive">
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
         <div class="well">
           {{#if currentUser}}
           {{#if name}}
           <h1>auth</h1>
-          <p>The application <b>{{name}}</b> requests access to the following information</p>
+          <p><b class="name">{{name}}</b> wants access to the information below, is that ok?</p>
           <ul>
             {{#each scopes}}<li>{{this}}</li>{{/each}}
           </ul>
-          <p>You are currently logged-in as:<br><b>{{currentUser.emails.[0].address}}</b></p>
+          <p>You are logged-in as:<br><b style="text-transform: uppercase;">{{currentUser.emails.[0].address}}</b>, not you? <a href="#" id="logout">log-out</a>!
+          </p>
           <div class="form-inline">
             <div class="btn-group btn-group-justified" role="group" aria-label="...">
               <div class="btn-group" role="group">
-                <input id="deny" type="submit" class="btn btn-danger" value="deny">
+                <input id="accept" type="submit" class="btn btn-success" value="yes">
               </div>
               <div class="btn-group" role="group">
-                <input id="accept" type="submit" class="btn btn-success" value="accept">
+                <input id="deny" type="submit" class="btn btn-danger" value="no">
               </div>
             </div>
           </div>
-          <p class="alert alert-warning" role="alert">Never reveal your password to any 3rd party.</p>
+          <p class="alert alert-warning" role="alert">Your password is personal, letting any 3<sup>rd</sup> party know about it will compromise your account</p>
           {{else}}
           <h1>Error.</h1>
           {{/if}}
           {{/if}}
         </div>
+        <div class="powered pull-right">powered by <span class="powered-by">novauth</span></div>
+        <br><div class="copyright pull-right">&copy; Alexander Troshin</div>
       </div>
     </div>
   </div>
@@ -65,7 +75,7 @@
   <br>
   <div class="container">
     <div class="row">
-      <div class="col-xs-8 col-xs-offset-2">
+      <div class="col-md-8 col-md-offset-2">
         <h2>oauth admin</h2>
         <div class="well">
           <p>Add your clients etc. right 'ere</p>
