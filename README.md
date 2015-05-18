@@ -1,6 +1,8 @@
 # Meteor OAuth2 provider
 This is a simple OAuth2 provider made in Meteor
 
+**Test it for yourself at http://novauth.meteor.com/**
+
 ## // WARNING //
 As it stands this **is *NOT* secure at all** and shouldn't be used in production without **heavy** modifications to the publish/subscribe methods and separating the client from server code. I will definitely continue working on it and in the future transform it into a package that can be dropped into any Meteor project to open up for the possibility to share the accounts in-between Meteor instances.
 
