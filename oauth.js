@@ -131,6 +131,8 @@ Router.route('auth', {
         redirect_uri: redirect_uri,
         scope: scope
       });
+    } else if(!Session.get('auth')) {
+      this.render("error");
     }
 
     // Check if user is logged in.

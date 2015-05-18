@@ -6,6 +6,10 @@
 {{> spinner}}
 </template>
 
+<template name="error">
+<h1>error.</h1>
+</template>
+
 <!-- LOGIN -->
 <template name="login">
   <br>
@@ -23,26 +27,30 @@
 <!-- MAIN -->
 <template name="auth">
   <br>
-  <div class="container">
+  <div class="container auth">
     <div class="row">
       <div class="col-xs-6 col-xs-offset-3">
         <div class="well">
           {{#if currentUser}}
-            <h1>Auth</h1>
-            <p>The application <b>{{name}}</b> requests access to the following information</p>
-            <ul>
-              {{#each scopes}}<li>{{this}}</li>{{/each}}
-            </ul>
-            <div class="form-inline">
-              <div class="btn-group btn-group-justified" role="group" aria-label="...">
-                <div class="btn-group" role="group">
-                  <input id="deny" type="submit" class="btn btn-danger" value="deny">
-                </div>
-                <div class="btn-group" role="group">
-                  <input id="accept" type="submit" class="btn btn-success" value="accept">
+            {{#if name}}
+              <h1>auth</h1>
+              <p>The application <b>{{name}}</b> requests access to the following information</p>
+              <ul>
+                {{#each scopes}}<li>{{this}}</li>{{/each}}
+              </ul>
+              <div class="form-inline">
+                <div class="btn-group btn-group-justified" role="group" aria-label="...">
+                  <div class="btn-group" role="group">
+                    <input id="deny" type="submit" class="btn btn-danger" value="deny">
+                  </div>
+                  <div class="btn-group" role="group">
+                    <input id="accept" type="submit" class="btn btn-success" value="accept">
+                  </div>
                 </div>
               </div>
-            </div>
+              {{else}}
+              <h1>Error.</h1>
+            {{/if}}
           {{/if}}
         </div>
       </div>
