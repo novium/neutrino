@@ -1,6 +1,6 @@
 /*
- * Database
- **********/
+* Database
+**********/
 
 // Databases
 Clients       = new Mongo.Collection('Clients');      // Clients
@@ -99,8 +99,8 @@ if(Meteor.isServer) {
 }
 
 /*
- * Router
- ********/
+* Router
+********/
 
 Router.configure({
   loadingTemplate: 'loading'
@@ -151,74 +151,74 @@ Router.route('auth', {
 // I'm not entirely sure that both are needed but I guess
 // It doesn't hurt to have both available for now.
 Router.route('token', { where: 'server', path: '/token' })
-  .post(function() {
-    this_token = this;
-    this.response.statusCode = 200;
-    this.response.setHeader("Content-Type", "application/json");
-    this.response.setHeader("Access-Control-Allow-Origin", "*");
-    this.response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+.post(function() {
+  this_token = this;
+  this.response.statusCode = 200;
+  this.response.setHeader("Content-Type", "application/json");
+  this.response.setHeader("Access-Control-Allow-Origin", "*");
+  this.response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 
-    auth_code = this.request.body.code;
-    client_secret = this.request.body.client_secret;
-    client_id = this.request.body.client_id;
+  auth_code = this.request.body.code;
+  client_secret = this.request.body.client_secret;
+  client_id = this.request.body.client_id;
 
-    if(Clients.findOne({_id: client_id, client_secret: client_secret}) &&  authCodes.findOne({auth_code: auth_code})) {
-      r = authCodes.findOne({auth_code: auth_code});
+  if(Clients.findOne({_id: client_id, client_secret: client_secret}) &&  authCodes.findOne({auth_code: auth_code})) {
+    r = authCodes.findOne({auth_code: auth_code});
 
-      accessTokens.insert({client_id: r.client_id, user_id: r.user_id}, function(error, result) {
-        access_token = accessTokens.findOne(result).access_token;
-        this_token.response.end(JSON.stringify(
-          {
-            "access_token": access_token
-          }
-        ));
-      });
-      authCodes.remove({auth_code: auth_code});
-    } else {
-      this.response.end(JSON.stringify(
+    accessTokens.insert({client_id: r.client_id, user_id: r.user_id}, function(error, result) {
+      access_token = accessTokens.findOne(result).access_token;
+      this_token.response.end(JSON.stringify(
         {
-          "error":"invalid_request"
+          "access_token": access_token
         }
       ));
-    }
-  })
-  .get(function() {
-    this_token = this;
-    this.response.statusCode = 200;
-    this.response.setHeader("Content-Type", "application/json");
-    this.response.setHeader("Access-Control-Allow-Origin", "*");
-    this.response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    });
+    authCodes.remove({auth_code: auth_code});
+  } else {
+    this.response.end(JSON.stringify(
+      {
+        "error":"invalid_request"
+      }
+    ));
+  }
+})
+.get(function() {
+  this_token = this;
+  this.response.statusCode = 200;
+  this.response.setHeader("Content-Type", "application/json");
+  this.response.setHeader("Access-Control-Allow-Origin", "*");
+  this.response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 
-    auth_code = this.params.query.code;
-    client_secret = this.params.query.client_secret;
-    client_id = this.params.query.client_id;
+  auth_code = this.params.query.code;
+  client_secret = this.params.query.client_secret;
+  client_id = this.params.query.client_id;
 
-    if(Clients.findOne({_id: client_id, client_secret: client_secret}) &&  authCodes.findOne({auth_code: auth_code})) {
-      r = authCodes.findOne({auth_code: auth_code});
+  if(Clients.findOne({_id: client_id, client_secret: client_secret}) &&  authCodes.findOne({auth_code: auth_code})) {
+    r = authCodes.findOne({auth_code: auth_code});
 
-      accessTokens.insert({client_id: r.client_id, user_id: r.user_id}, function(error, result) {
-        access_token = accessTokens.findOne(result).access_token;
-        this_token.response.end(JSON.stringify(
-          {
-            "access_token": access_token
-          }
-        ));
-      });
-      authCodes.remove({auth_code: auth_code});
-    } else {
-      this.response.end(JSON.stringify(
+    accessTokens.insert({client_id: r.client_id, user_id: r.user_id}, function(error, result) {
+      access_token = accessTokens.findOne(result).access_token;
+      this_token.response.end(JSON.stringify(
         {
-          "error":"invalid_request"
+          "access_token": access_token
         }
       ));
-    }
-  });
+    });
+    authCodes.remove({auth_code: auth_code});
+  } else {
+    this.response.end(JSON.stringify(
+      {
+        "error":"invalid_request"
+      }
+    ));
+  }
+});
 
 AccountsTemplates.configureRoute('signIn', {
-    name: 'signin',
-    path: '/login',
-    template: 'login',
-    layoutTemplate: 'layout'
+  name: 'signin',
+  path: '/login',
+  template: 'login',
+  layoutTemplate: 'layout'
 });
 
 // Unused
@@ -235,10 +235,21 @@ Router.route('admin', {
 });
 
 /*
- * Client Code
- **************/
+* Client Code
+**************/
 
 if(Meteor.isClient) {
+  sAlert.config({
+    effect: 'flip',
+    position: 'top-right',
+    timeout: 5000,
+    html: true
+  });
+
+  Meteor.Spinner.options = {
+    color: '#fff', // #rgb or #rrggbb
+  };
+
   // Admin page helpers
   Template.admin.helpers({
     clients: function() {
@@ -249,14 +260,27 @@ if(Meteor.isClient) {
   // Authorization page event code
   Template.auth.events({
     'click #accept': function() {
+      $(event.target).button('loading');
       client_id = Session.get('auth').client_id;
       authCodes.insert({client_id: client_id}, function(error, result) {
-        auth_code = authCodes.findOne(result).auth_code;
-        window.location.replace(Clients.findOne(Session.get('auth').client_id).redirect_uri + '?code=' + auth_code);
+        if(!error) {
+          sAlert.success('authorized.', {position: 'bottom', timeout: 1500});
+          auth_code = authCodes.findOne(result).auth_code;
+          setTimeout(function(){
+            window.location.replace(Clients.findOne(Session.get('auth').client_id).redirect_uri + '?code=' + auth_code);
+            setTimeout(function() {
+              sAlert.error('something went very wrong, please click <a href="' + Clients.findOne(Session.get('auth').client_id).redirect_uri + '?code=' + auth_code + '">this link</a> to continue.', {position: 'bottom', timeout: 0});
+            }, 100);
+          }, 2000);
+        } else {
+          sAlert.error('error', {position: 'bottom'});
+          $(event.target).button('reset');
+        }
       });
     },
 
-    'click #deny': function() {
+    'click #deny': function(event) {
+      $(event.target).button('loading');
       window.location.replace(Clients.findOne(Session.get('auth').client_id).redirect_uri + '?error=' + "denied");
     }
   });

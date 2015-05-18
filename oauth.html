@@ -1,13 +1,14 @@
 <template name="layout">
   {{> yield}}
+  {{> sAlert}}
 </template>
 
 <template name="loading">
-{{> spinner}}
+  {{> spinner}}
 </template>
 
 <template name="error">
-<h1>error.</h1>
+  <h1>error.</h1>
 </template>
 
 <!-- LOGIN -->
@@ -32,25 +33,27 @@
       <div class="col-xs-6 col-xs-offset-3">
         <div class="well">
           {{#if currentUser}}
-            {{#if name}}
-              <h1>auth</h1>
-              <p>The application <b>{{name}}</b> requests access to the following information</p>
-              <ul>
-                {{#each scopes}}<li>{{this}}</li>{{/each}}
-              </ul>
-              <div class="form-inline">
-                <div class="btn-group btn-group-justified" role="group" aria-label="...">
-                  <div class="btn-group" role="group">
-                    <input id="deny" type="submit" class="btn btn-danger" value="deny">
-                  </div>
-                  <div class="btn-group" role="group">
-                    <input id="accept" type="submit" class="btn btn-success" value="accept">
-                  </div>
-                </div>
+          {{#if name}}
+          <h1>auth</h1>
+          <p>The application <b>{{name}}</b> requests access to the following information</p>
+          <ul>
+            {{#each scopes}}<li>{{this}}</li>{{/each}}
+          </ul>
+          <p>You are currently logged-in as:<br><b>{{currentUser.emails.[0].address}}</b></p>
+          <div class="form-inline">
+            <div class="btn-group btn-group-justified" role="group" aria-label="...">
+              <div class="btn-group" role="group">
+                <input id="deny" type="submit" class="btn btn-danger" value="deny">
               </div>
-              {{else}}
-              <h1>Error.</h1>
-            {{/if}}
+              <div class="btn-group" role="group">
+                <input id="accept" type="submit" class="btn btn-success" value="accept">
+              </div>
+            </div>
+          </div>
+          <p class="alert alert-warning" role="alert">Never reveal your password to any 3rd party.</p>
+          {{else}}
+          <h1>Error.</h1>
+          {{/if}}
           {{/if}}
         </div>
       </div>
@@ -67,10 +70,10 @@
         <div class="well">
           <p>Add your clients etc. right 'ere</p>
           {{#autoForm collection="Clients" id="add_client_form" type="insert"}}
-            {{> afQuickField name="name"}}
-            {{> afQuickField name="scopes"}}
-            {{> afQuickField name="redirect_uri"}}
-            <button type="submit" class="btn btn-primary">Insert</button>
+          {{> afQuickField name="name"}}
+          {{> afQuickField name="scopes"}}
+          {{> afQuickField name="redirect_uri"}}
+          <button type="submit" class="btn btn-primary">Insert</button>
           {{/autoForm}}
         </div>
         <hr>
@@ -78,7 +81,7 @@
           <p>List of all the current clients</p>
           <p>name | id | client_secret</p>
           {{#each clients}}
-            {{name}} | {{_id}} | {{client_secret}}<br>
+          {{name}} | {{_id}} | {{client_secret}}<br>
           {{/each}}
         </div>
       </div>
