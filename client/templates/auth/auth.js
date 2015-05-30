@@ -11,9 +11,11 @@ Template.auth.events({
         auth_code = authCodes.findOne(result).auth_code;
         setTimeout(function(){
           window.location.replace(Clients.findOne(Session.get('auth').client_id).redirect_uri + '?code=' + auth_code);
+
+          // meh.
           setTimeout(function() {
-            sAlert.error('something went very wrong, please click <a href="' + Clients.findOne(Session.get('auth').client_id).redirect_uri + '?code=' + auth_code + '">this link</a> to continue.', {position: 'bottom', timeout: 0});
-          }, 1000);
+            sAlert.error('this seems to take some time, click <a href="' + Clients.findOne(Session.get('auth').client_id).redirect_uri + '?code=' + auth_code + '">this link</a> to continue.', {position: 'bottom', timeout: 0});
+          }, 2000);
         }, 500);
       } else {
         sAlert.error('error', {position: 'bottom'});

@@ -8,3 +8,12 @@ Meteor.publish('authCodes', function() {
   user_id = this.userId;
   return authCodes.find({user_id: user_id});
 });
+
+// Permissions
+
+// Allow inserting authCodes
+authCodes.allow({
+  insert: function(userId, doc) {
+    return userId;
+  }
+});
