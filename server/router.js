@@ -5,21 +5,21 @@
 // It doesn't hurt to have both available for now.
 Router.route('token', { where: 'server', path: '/token' })
 .post(function() {
-  this_token = this;
+  var this_token = this;
   this.response.statusCode = 200;
   this.response.setHeader("Content-Type", "application/json");
   this.response.setHeader("Access-Control-Allow-Origin", "*");
   this.response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 
-  auth_code = this.request.body.code;
-  client_secret = this.request.body.client_secret;
-  client_id = this.request.body.client_id;
+  var auth_code = this.request.body.code;
+  var client_secret = this.request.body.client_secret;
+  var client_id = this.request.body.client_id;
 
   if(Clients.findOne({_id: client_id, client_secret: client_secret}) &&  authCodes.findOne({auth_code: auth_code})) {
-    r = authCodes.findOne({auth_code: auth_code});
+    var r = authCodes.findOne({auth_code: auth_code});
 
     accessTokens.insert({client_id: r.client_id, user_id: r.user_id}, function(error, result) {
-      access_token = accessTokens.findOne(result).access_token;
+      var access_token = accessTokens.findOne(result).access_token;
       this_token.response.end(JSON.stringify(
         {
           "access_token": access_token
@@ -36,21 +36,21 @@ Router.route('token', { where: 'server', path: '/token' })
   }
 })
 .get(function() {
-  this_token = this;
+  var this_token = this;
   this.response.statusCode = 200;
   this.response.setHeader("Content-Type", "application/json");
   this.response.setHeader("Access-Control-Allow-Origin", "*");
   this.response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 
-  auth_code = this.params.query.code;
-  client_secret = this.params.query.client_secret;
-  client_id = this.params.query.client_id;
+  var auth_code = this.params.query.code;
+  var client_secret = this.params.query.client_secret;
+  var client_id = this.params.query.client_id;
 
   if(Clients.findOne({_id: client_id, client_secret: client_secret}) &&  authCodes.findOne({auth_code: auth_code})) {
-    r = authCodes.findOne({auth_code: auth_code});
+    var r = authCodes.findOne({auth_code: auth_code});
 
     accessTokens.insert({client_id: r.client_id, user_id: r.user_id}, function(error, result) {
-      access_token = accessTokens.findOne(result).access_token;
+      var access_token = accessTokens.findOne(result).access_token;
       this_token.response.end(JSON.stringify(
         {
           "access_token": access_token
