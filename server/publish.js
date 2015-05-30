@@ -5,7 +5,7 @@ Meteor.publish('Client', function(client_id) {
 });
 
 Meteor.publish('authCodes', function() {
-  user_id = this.userId;
+  var user_id = this.userId;
   return authCodes.find({user_id: user_id});
 });
 

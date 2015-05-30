@@ -19,10 +19,10 @@ Router.route('auth', {
     // go back to the auth page after doing something
     // else as a session variable.
     if(this.params.query.client_id) {
-      response_type = this.params.query.response_type;
-      client_id     = this.params.query.client_id;
-      redirect_uri  = this.params.query.redirect_uri;
-      scope         = this.params.query.scope;
+      var response_type = this.params.query.response_type;
+      var client_id     = this.params.query.client_id;
+      var redirect_uri  = this.params.query.redirect_uri;
+      var scope         = this.params.query.scope;
       Session.set('auth', {
         response_type: response_type,
         client_id: client_id,
