@@ -4,11 +4,11 @@ Template.auth.events({
   'click #accept': function(event) {
     event.preventDefault();
     $(event.target).button('loading');
-    client_id = Session.get('auth').client_id;
+    var client_id = Session.get('auth').client_id;
     authCodes.insert({client_id: client_id}, function(error, result) {
       if(!error) {
         sAlert.success('authorized.', {position: 'bottom', timeout: 700});
-        auth_code = authCodes.findOne(result).auth_code;
+        var auth_code = authCodes.findOne(result).auth_code;
         setTimeout(function(){
           window.location.replace(Clients.findOne(Session.get('auth').client_id).redirect_uri + '?code=' + auth_code);
 
