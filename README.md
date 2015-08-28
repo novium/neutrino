@@ -3,10 +3,10 @@ This is a simple OAuth2 provider made in Meteor
 
 **Test it for yourself at http://novauth.meteor.com/**
 
-**Also, help me come up with a better name for the project over at twitter (@Noviium) or open a new issue.**
+**Also, help me come up with a better name for the project over at twitter (@novium_) or open a new issue.**
 
 ## // WARNING //
-As it stands this **is *NOT* secure at all** and shouldn't be used in production without **heavy** modifications to the publish/subscribe methods and separating the client from server code. I will definitely continue working on it and in the future transform it into a package that can be dropped into any Meteor project to open up for the possibility to share the accounts in-between Meteor instances.
+As it stands this **is *NOT* secure at all** and shouldn't be used in production without **heavy** modifications to the publish/subscribe methods and separating the client from server code. I will definitely continue working on it and in the future make a package that can be dropped into any Meteor project to open up for the possibility to share the accounts in-between Meteor and/or other kinds of services that support oauth2.
 
 ![UI](http://puu.sh/hRQC7/c98bc5c07f.png)
 
@@ -18,7 +18,7 @@ As it stands this **is *NOT* secure at all** and shouldn't be used in production
 ## // todo
 * Security
 * Rework into a package
-* Everything not listed in the feature-list >.>
+* Add openid support
 
 ## Contributing
 Feel free to contribute, it will make my life easier, even such things as finding small stupid errors I (or someone else for that matter, tho that isn't as probable) made is awesome and appreciated. It will also bring this project another step closer to completion.

@@ -17,3 +17,16 @@ authCodes.allow({
     return userId;
   }
 });
+
+// Allow adding clients for admins
+Clients.allow({
+	insert: function(userId, doc) {
+		//if(userIsInRole("admin")) or something like this
+		return userId;
+	}
+});
+
+// Dev code
+Meteor.publish('Clients_all', function() {
+	return Clients.find();
+});

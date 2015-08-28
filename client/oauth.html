@@ -25,52 +25,6 @@
   </div>
 </template>
 
-<!-- MAIN -->
-<template name="auth">
-  <br>
-  <div class="container auth">
-    <div class="row">
-      <div class="col-md-6 col-md-offset-3">
-        <div class="logo">
-          <img style="display:block-inline" src="http://placehold.it/116x50" class="img-responsive">
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-6 col-md-offset-3">
-        <div class="well">
-          {{#if currentUser}}
-          {{#if name}}
-          <h1>auth</h1>
-          <p><b class="name">{{name}}</b> wants access to the information below, is that ok?</p>
-          <ul>
-            {{#each scopes}}<li>{{this}}</li>{{/each}}
-          </ul>
-          <p>You are logged-in as:<br><b style="text-transform: uppercase;">{{currentUser.emails.[0].address}}</b>, not you? <a href="#" id="logout">log-out</a>!
-          </p>
-          <div class="form-inline">
-            <div class="btn-group btn-group-justified" role="group" aria-label="...">
-              <div class="btn-group" role="group">
-                <input id="accept" type="submit" class="btn btn-success" value="yes">
-              </div>
-              <div class="btn-group" role="group">
-                <input id="deny" type="submit" class="btn btn-danger" value="no">
-              </div>
-            </div>
-          </div>
-          <p class="alert alert-warning" role="alert">Your password is personal, letting any 3<sup>rd</sup> party know about it will compromise your account</p>
-          {{else}}
-          <h1>Error.</h1>
-          {{/if}}
-          {{/if}}
-        </div>
-        <div class="powered pull-right">powered by <span class="powered-by">bitauth</span></div>
-        <br><div class="copyright pull-right">&copy; Alexander Troshin</div>
-      </div>
-    </div>
-  </div>
-</template>
-
 <template name="admin">
   <br>
   <div class="container">

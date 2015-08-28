@@ -5,7 +5,7 @@ Router.configure({
 });
 
 // Auth route
-// DOMAIN.TLD/auth?response_type=token&client_id=CLIENT_ID&redirect_uri=REDIRECT_URI&scope=SCOPES
+// DOMAIN.TLD/oauth/auth?response_type=token&client_id=CLIENT_ID&redirect_uri=REDIRECT_URI&scope=SCOPES
 Router.route('auth', {
   path: '/oauth/auth',
   name: 'auth',
@@ -15,22 +15,20 @@ Router.route('auth', {
     return Clients.findOne(Session.get('auth').client_id);
   },
   waitOn: function() {
-    // Saves the URL parameters so that user can
-    // go back to the auth page after doing something
-    // else as a session variable.
+    // Saves request variables to session
     if(this.params.query.client_id) {
-      var response_type = this.params.query.response_type;
-      var client_id     = this.params.query.client_id;
-      var redirect_uri  = this.params.query.redirect_uri;
-      var scope         = this.params.query.scope;
+      var response_type   = this.params.query.response_type;
+      var client_id       = this.params.query.client_id;
+      //var redirect_uri  = this.params.query.redirect_uri;
+      //var scope         = this.params.query.scope;
       Session.set('auth', {
         response_type: response_type,
         client_id: client_id,
-        redirect_uri: redirect_uri,
-        scope: scope
+        //redirect_uri: redirect_uri,
+        //scope: scope
       });
     } else if(!Session.get('auth')) {
-      this.render("error");
+      this.render("auth_error");
     }
 
     // Check if user is logged in.
@@ -51,6 +49,14 @@ AccountsTemplates.configureRoute('signIn', {
   template: 'login',
   layoutTemplate: 'layout'
 });
+
+// Other
+
+/*Router.route('home', {
+  path: '/',
+  name: 'home',
+  template: 'home'
+});*/
 
 // Unused
 Router.route('register', {

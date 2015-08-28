@@ -9,6 +9,17 @@ $bg_light:  rgb(230,230,230);
   100% {border-color: hsl(255, 100%, 50%);}
 }
 
+/* Hacks! */
+@media(max-width: 275px) {
+  .container {
+    padding-right: 0;
+    padding-left: 0;
+  }
+  .auth .well {
+    border-radius: 0 !important;
+  }
+}
+
 /* Body */
 body {
   background: $bg;
@@ -66,6 +77,15 @@ body:before {
     font-weight: 700;
   }
 
+  h2 {
+    margin-top: 5px;
+    margin-bottom: 10px;
+    font-size: 16px;
+    text-transform: uppercase;
+    font-family: "Montserrat", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+    font-weight: 600;
+  }
+
   p, li, input {
     font-family: "Montserrat", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
   }
@@ -76,6 +96,7 @@ body:before {
   }
 
   .alert {
+    border: none;
     border-radius: 0;
 
     padding-top: 5px;
@@ -83,6 +104,13 @@ body:before {
 
     margin-top: 5px;
     margin-bottom: 0;
+  }
+
+  .alert-warning {
+    box-shadow: -19px 0px #fcf8e3, 19px 0px #fcf8e3;
+  }
+  .alert-danger {
+    box-shadow: -19px 0px #f2dede, 19px 0px #f2dede; 
   }
 
   input[type="submit"] {
@@ -101,7 +129,7 @@ body:before {
     box-shadow: 19px 0px #d9534f;
     border: none;
   }
-  #deny:hover {
+  #deny:hover, #deny:focus {
     box-shadow: 19px 0px #c9302c;
   }
 
@@ -109,7 +137,7 @@ body:before {
     box-shadow: -19px 0px #5cb85c;
     border: none;
   }
-  #accept:hover {
+  #accept:hover, #accept:focus {
     box-shadow: -19px 0px #449d44;
   }
 }
