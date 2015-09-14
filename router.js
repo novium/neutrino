@@ -1,7 +1,7 @@
 // Router
-
 Router.configure({
-  loadingTemplate: 'loading'
+  loadingTemplate: 'loading',
+  layoutTemplate: 'layout'
 });
 
 // Auth route
@@ -15,9 +15,8 @@ Router.route('auth', {
     return Clients.findOne(Session.get('auth').client_id);
   },
   waitOn: function() {
-    // Saves the URL parameters so that user can
-    // go back to the auth page after doing something
-    // else as a session variable.
+    // Saves the URL parameters as a session variable so that the user can go
+    // back to the oauth flow even after being redirected.
     if(this.params.query.client_id) {
       var response_type = this.params.query.response_type;
       var client_id     = this.params.query.client_id;
@@ -45,6 +44,7 @@ Router.route('auth', {
   }
 });
 
+// Fix by adding useraccounts:iron-routing >.<
 AccountsTemplates.configureRoute('signIn', {
   name: 'signin',
   path: '/login',
@@ -52,13 +52,7 @@ AccountsTemplates.configureRoute('signIn', {
   layoutTemplate: 'layout'
 });
 
-// Unused
-Router.route('register', {
-  path: '/oauth/register',
-  template: 'register',
-  layoutTemplate: 'layout'
-});
-
+// oauth admin page // BROKEN
 Router.route('admin', {
   path: '/oauth/admin',
   template: 'admin',
