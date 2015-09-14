@@ -44,7 +44,6 @@ Router.route('auth', {
   }
 });
 
-// Fix by adding useraccounts:iron-routing >.<
 AccountsTemplates.configureRoute('signIn', {
   name: 'signin',
   path: '/login',
