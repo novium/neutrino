@@ -1,7 +1,7 @@
 // Router
-
 Router.configure({
-  loadingTemplate: 'loading'
+  loadingTemplate: 'loading',
+  layoutTemplate: 'layout'
 });
 
 // Auth route
@@ -15,7 +15,8 @@ Router.route('auth', {
     return Clients.findOne(Session.get('auth').client_id);
   },
   waitOn: function() {
-    // Saves request variables to session
+    // Saves the URL parameters as a session variable so that the user can go
+    // back to the oauth flow even after being redirected.
     if(this.params.query.client_id) {
       var response_type   = this.params.query.response_type;
       var client_id       = this.params.query.client_id;
@@ -47,21 +48,6 @@ AccountsTemplates.configureRoute('signIn', {
   name: 'signin',
   path: '/login',
   template: 'login',
-  layoutTemplate: 'layout'
-});
-
-// Other
-
-/*Router.route('home', {
-  path: '/',
-  name: 'home',
-  template: 'home'
-});*/
-
-// Unused
-Router.route('register', {
-  path: '/oauth/register',
-  template: 'register',
   layoutTemplate: 'layout'
 });
 

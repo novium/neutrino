@@ -1,5 +1,5 @@
-# Meteor OAuth2 provider
-This is a simple OAuth2 provider made in Meteor
+# neutrino
+An OAuth2 provider solution for Meteor.
 
 **Test it for yourself at http://novauth.meteor.com/**
 
@@ -19,6 +19,16 @@ As it stands this **is *NOT* secure at all** and shouldn't be used in production
 * Security
 * Rework into a package
 * Add openid support
+* Add JWT support
 
 ## Contributing
-Feel free to contribute, it will make my life easier, even such things as finding small stupid errors I (or someone else for that matter, tho that isn't as probable) made is awesome and appreciated. It will also bring this project another step closer to completion.
+Feel free to contribute, it will make my life easier, even such things as
+finding small stupid errors I (or someone else for that matter, tho that isn't
+as probable) made is awesome and appreciated. It will also bring this project
+another step closer to completion.
+
+## Why neutrino?
+The neutrino is an elementary particle that flies across space, it seems to be
+possible to send data using them at incredible speeds across the solar system
+and through Earths core; that isn't too far off from the goal of this project.
+Also, space, meteor.
