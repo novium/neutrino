@@ -1,8 +1,6 @@
 # neutrino
 An OAuth2 provider/server solution for Meteor.
 
-**Test a live version at http://novauth.meteor.com/**
-
 ## // WARNING //
 As it stands this **is *NOT* secure at all** and shouldn't be used in production without **heavy** modifications to the publish/subscribe methods and separating the client from server code. I will definitely continue working on it and in the future make a package that can be dropped into any Meteor project to open up for the possibility to share the accounts in-between Meteor and/or other kinds of services that support oauth2.
 
